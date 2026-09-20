@@ -1,0 +1,7 @@
+{
+  "name": "FacturAppStandAlone",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}

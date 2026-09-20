@@ -1,0 +1,61 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-title>Lista de Clientes</ion-title>
+    @if (meta) {
+      <ion-badge slot="end" color="light" class="ion-margin-end">
+        {{ meta.total }} registrados
+      </ion-badge>
+    }
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+
+  <ion-refresher slot="fixed" (ionRefresh)="cargar($event)">
+    <ion-refresher-content refreshingSpinner="crescent"></ion-refresher-content>
+  </ion-refresher>
+
+  @if (cargando) {
+    <div class="ion-text-center ion-padding">
+      <ion-spinner name="crescent"></ion-spinner>
+      <p style="opacity: 0.7;">Cargando clientes...</p>
+    </div>
+  } @else if (error) {
+    <div class="ion-text-center ion-padding">
+      <p style="opacity:.7">{{ error }}</p>
+      <ion-button fill="outline" (click)="cargar()">
+        <ion-icon name="refresh-outline" slot="start"></ion-icon>
+        Reintentar
+      </ion-button>
+    </div>
+  } @else if (clientes.length === 0) {
+    <div class="ion-text-center ion-padding" style="margin-top: 3rem;">
+      <ion-icon name="people-outline" style="font-size:64px; opacity:.3"></ion-icon>
+      <p style="opacity: .6">Todavía no hay clientes registrados.</p>
+    </div>
+  } @else {
+    <ion-list>
+      @for (cliente of clientes; track cliente.id) {
+        <ion-item>
+          <ion-avatar slot="start"
+                      style="display:flex; align-items:center; justify-content:center;
+                             background: var(--ion-color-primary);">
+            <span style="font-weight:600; color:#fff">{{ inicial(cliente.nombre) }}</span>
+          </ion-avatar>
+          <ion-label>
+            <h2>{{ cliente.nombre }} {{ cliente.apellido }}</h2>
+            <p><strong>Correo:</strong> {{ cliente.correo }}</p>
+            <ion-note style="font-size:12px; opacity: 0.8;">
+              Doc: {{ cliente.documentoIdentidad }} · Tel: {{ cliente.telefono }}
+            </ion-note>
+            <br />
+            <ion-note style="font-size:11px; opacity: 0.6;">
+              Dirección: {{ cliente.direccion }}
+            </ion-note>
+          </ion-label>
+        </ion-item>
+      }
+    </ion-list>
+  }
+
+</ion-content>
